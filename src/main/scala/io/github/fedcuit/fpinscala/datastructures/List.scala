@@ -54,4 +54,12 @@ object List {
       case Cons(h, t) => Cons(newHead, t)
     }
   }
+
+  def init[A](xs: List[A]): List[A] = {
+    xs match {
+      case Nil => throw new RuntimeException("empty list don't have a tail")
+      case Cons(h, Nil) => Nil
+      case Cons(h, t) => Cons(h, init(t))
+    }
+  }
 }

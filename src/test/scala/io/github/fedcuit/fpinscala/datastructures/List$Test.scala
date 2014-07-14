@@ -57,5 +57,20 @@ class List$Test extends FunSpec with Matchers {
       }
     }
 
+    describe("init method") {
+      it("should throw exception when operate a empty list") {
+        intercept[RuntimeException] {
+          List.init(Nil)
+        }
+      }
+
+      it("should return Nil when operate a list which only have one element") {
+        List.init(Cons(2, Nil)) should be(Nil)
+      }
+
+      it("should return all elements exception the last one") {
+        List.init(Cons(2, Cons(-3, Cons(-7, Cons(5, Nil))))) should be(Cons(2, Cons(-3, Cons(-7, Nil))))
+      }
+    }
   }
 }
