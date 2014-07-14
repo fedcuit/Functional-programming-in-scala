@@ -90,5 +90,11 @@ class List$Test extends FunSpec with Matchers {
         List.product(List(1, 2, 3, 4, 5)) should be(120)
       }
     }
+
+    describe("reverse method") {
+      it("should return the list in reversed order") {
+        List.reverse(List(1, 2, 3, 4, 5)) should be(List(5, 4, 3, 2, 1))
+      }
+    }
   }
 }

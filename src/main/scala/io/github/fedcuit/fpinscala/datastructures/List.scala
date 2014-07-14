@@ -70,4 +70,8 @@ object List {
       case Cons(h, t) => Cons(h, append(t, ys))
     }
   }
+
+  def reverse[A](xs: List[A]): List[A] = {
+    foldRight(xs, List[A]())((ys: List[A], x: A) => List.append(ys, List(x)))
+  }
 }
