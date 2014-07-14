@@ -7,16 +7,17 @@ case object Nil extends List[Nothing]
 case class Cons[+A](head: A, tail: List[A]) extends List[A]
 
 object List {
-  def sum(ints: List[Int]): Int = ints match {
-    case Nil => 0
-    case Cons(x, xs) => x + sum(xs)
+
+  def foldRight[A, B](xs: List[A], init: B)(f: (B, A) => B): B = {
+    xs match {
+      case Nil => init
+      case Cons(h, t) => f(foldRight(t, init)(f), h)
+    }
   }
 
-  def product(ds: List[Double]): Double = ds match {
-    case Nil => 1.0
-    case Cons(0.0, _) => 0.0
-    case Cons(x, xs) => x * product(xs)
-  }
+  def sum(xs: List[Int]): Int = foldRight(xs, 0)(_ + _)
+
+  def product(xs: List[Double]): Double = foldRight(xs, 1d)(_ * _)
 
   def apply[A](as: A*): List[A] =
     if (as.isEmpty) Nil

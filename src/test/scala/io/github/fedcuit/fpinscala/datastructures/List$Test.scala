@@ -78,5 +78,17 @@ class List$Test extends FunSpec with Matchers {
         List.append(List(1, 2, 3), List(4, 5)) should be(List(1, 2, 3, 4, 5))
       }
     }
+
+    describe("sum method") {
+      it("should return the sum of all elements") {
+        List.sum(List(1, 2, 3, 4, 5)) should be(15)
+      }
+    }
+
+    describe("product method") {
+      it("should return the product of all elements") {
+        List.product(List(1, 2, 3, 4, 5)) should be(120)
+      }
+    }
   }
 }
