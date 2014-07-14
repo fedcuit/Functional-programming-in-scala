@@ -7,30 +7,30 @@ class List$Test extends FunSpec with Matchers {
     describe("tail method") {
       it("should throw exception when extract tail of a empty list") {
         intercept[RuntimeException] {
-          List.tail(Nil)
+          List.tail(List())
         }
       }
 
       it("should return Nil when extract tail of a list which only contains one element") {
-        List.tail(Cons("i'm head", Nil)) should be(Nil)
+        List.tail(List("i'm head")) should be(Nil)
       }
 
       it("should return all the elements except the first one when extract tail of a list") {
-        List.tail(Cons("i'm head", Cons("i'm second", Cons("i'm third", Nil)))) should be(Cons("i'm second", Cons("i'm third", Nil)))
+        List.tail(List("i'm head", "i'm second", "i'm third")) should be(List("i'm second", "i'm third"))
       }
     }
 
     describe("drop method") {
       it("should return Nil when drop the first 2 element of a empty list") {
-        List.drop(Nil, 2) should be(Nil)
+        List.drop(List(), 2) should be(Nil)
       }
 
       it("should return Nil when drop the first 2 element of a list which only contains one element") {
-        List.drop(Cons("only one", Nil), 2) should be(Nil)
+        List.drop(List("only one"), 2) should be(Nil)
       }
 
       it("should return the last element when drop the first 2 element aof a list which contains 3 elements") {
-        List.drop(Cons("i'm head", Cons("i'm second", Cons("i'm third", Nil))), 2) should be(Cons("i'm third", Nil))
+        List.drop(List("i'm head", "i'm second", "i'm third"), 2) should be(List("i'm third"))
       }
     }
 
@@ -40,7 +40,7 @@ class List$Test extends FunSpec with Matchers {
       }
 
       it("should return the first continuous n elements when drop while element bigger that 1 of a empty list") {
-        List.dropWhile(Cons(2, Cons(-3, Cons(-7, Cons(5, Nil)))))(_ > 1) should be(Cons(-3, Cons(-7, Cons(5, Nil))))
+        List.dropWhile(List(2, -3, -7, 5))(_ > 1) should be(List(-3, -7, 5))
       }
 
     }
@@ -53,23 +53,23 @@ class List$Test extends FunSpec with Matchers {
       }
 
       it("should return a list with new head for call setHead") {
-        List.setHead(Cons("oldHead", Nil), "newHead") should be(Cons("newHead", Nil))
+        List.setHead(List("oldHead"), "newHead") should be(List("newHead"))
       }
     }
 
     describe("init method") {
       it("should throw exception when operate a empty list") {
         intercept[RuntimeException] {
-          List.init(Nil)
+          List.init(List())
         }
       }
 
       it("should return Nil when operate a list which only have one element") {
-        List.init(Cons(2, Nil)) should be(Nil)
+        List.init(List(2)) should be(Nil)
       }
 
       it("should return all elements exception the last one") {
-        List.init(Cons(2, Cons(-3, Cons(-7, Cons(5, Nil))))) should be(Cons(2, Cons(-3, Cons(-7, Nil))))
+        List.init(List(2, -3, -7, 5)) should be(List(2, -3, -7))
       }
     }
   }
