@@ -62,4 +62,11 @@ object List {
       case Cons(h, t) => Cons(h, init(t))
     }
   }
+
+  def append[A](xs: List[A], ys: List[A]): List[A] = {
+    xs match {
+      case Nil => ys
+      case Cons(h, t) => Cons(h, append(t, ys))
+    }
+  }
 }
