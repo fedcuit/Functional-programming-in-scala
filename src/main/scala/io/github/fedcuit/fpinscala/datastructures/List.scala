@@ -74,4 +74,8 @@ object List {
   def reverse[A](xs: List[A]): List[A] = {
     foldRight(xs, List[A]())((ys: List[A], x: A) => List.append(ys, List(x)))
   }
+
+  def length[A](xs: List[A]): Int = {
+    List.foldRight(xs, 0)((ys, x) => ys + 1)
+  }
 }

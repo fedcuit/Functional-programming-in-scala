@@ -96,5 +96,14 @@ class List$Test extends FunSpec with Matchers {
         List.reverse(List(1, 2, 3, 4, 5)) should be(List(5, 4, 3, 2, 1))
       }
     }
+
+    describe("length method") {
+      it("should return the size of elements in list") {
+        List.length(List(1,2,3,4)) should be(4)
+      }
+
+      it("should return 0 when call in on a empty list") {}
+      List.length(List()) should be(0)
+    }
   }
 }
