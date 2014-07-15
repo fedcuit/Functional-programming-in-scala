@@ -91,6 +91,10 @@ object List {
     }
   }
 
+  def append2[A](xs: List[A], ys: List[A]): List[A] = {
+    foldRight(xs, ys)((acc, x) => Cons(x, acc))
+  }
+
   def reverse[A](xs: List[A]): List[A] = foldRight(xs, List[A]())((ys, x) => append(ys, List(x)))
 
   def length[A](xs: List[A]): Int = foldRight(xs, 0)((ys, x) => ys + 1)

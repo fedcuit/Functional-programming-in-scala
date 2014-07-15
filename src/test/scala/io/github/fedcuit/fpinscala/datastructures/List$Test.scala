@@ -76,6 +76,7 @@ class List$Test extends FunSpec with Matchers {
     describe("append method") {
       it("should append list B to the end of list A") {
         List.append(List(1, 2, 3), List(4, 5)) should be(List(1, 2, 3, 4, 5))
+        List.append2(List(1, 2, 3), List(4, 5)) should be(List(1, 2, 3, 4, 5))
       }
     }
 
