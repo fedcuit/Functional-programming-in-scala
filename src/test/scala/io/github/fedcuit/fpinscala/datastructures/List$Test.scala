@@ -127,5 +127,18 @@ class List$Test extends FunSpec with Matchers {
         List.concat(List(1, 2, 3), List(4, 5, 6), List(7, 8, 9)) should be(List(1, 2, 3, 4, 5, 6, 7, 8, 9))
       }
     }
+
+    describe("map method") {
+      it("should return a new list in which each element is calculated base on the old one") {
+        List.map(List(1, 2, 3, 4))(_ + 1) should be(List(2, 3, 4, 5))
+        List.map(List(1d, 2d, 3d, 4d))(_.toString) should be(List("1.0", "2.0", "3.0", "4.0"))
+      }
+    }
+
+    describe("filter method") {
+      it("should remove all elements which meets condition") {
+        List.filter(List(1, 2, 3, 4))(_ % 2 == 0) should be(List(1, 3))
+      }
+    }
   }
 }

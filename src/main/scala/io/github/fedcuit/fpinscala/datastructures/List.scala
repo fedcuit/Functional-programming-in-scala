@@ -106,4 +106,12 @@ object List {
     else if (ls.size == 2) append(ls.head, ls.last)
     else append(ls.head, concat(ls.tail: _*))
   }
+
+  def map[A, B](xs: List[A])(f: A => B): List[B] = {
+   foldLeft(xs, List[B]())((ys, x) => Cons(f(x), ys))
+  }
+
+  def filter[A](xs: List[A])(f: A => Boolean): List[A] = {
+    foldLeft(xs, List[A]())((ys, x) => if (f(x)) ys else Cons(x, ys))
+  }
 }
