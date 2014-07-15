@@ -15,11 +15,11 @@ object List {
     }
   }
 
-  def foldLeft[A, B](xs: List[A], init: B)(f: (B, A) => B): B = {
+  def foldLeft[A, B](xs: List[A], acc: B)(f: (B, A) => B): B = {
     xs match {
-      case Nil => init
-      case Cons(h, Nil) => f(init, h)
-      case Cons(h, t) => foldLeft(List.init(xs), f(init, List.last(xs)))(f)
+      case Nil => acc
+      case Cons(h, Nil) => f(acc, h)
+      case Cons(h, t) => foldLeft(init(xs), f(acc, last(xs)))(f)
     }
   }
 
@@ -91,9 +91,9 @@ object List {
     }
   }
 
-  def reverse[A](xs: List[A]): List[A] = foldRight(xs, List[A]())((ys: List[A], x: A) => List.append(ys, List(x)))
+  def reverse[A](xs: List[A]): List[A] = foldRight(xs, List[A]())((ys, x) => append(ys, List(x)))
 
-  def length[A](xs: List[A]): Int = List.foldRight(xs, 0)((ys, x) => ys + 1)
+  def length[A](xs: List[A]): Int = foldRight(xs, 0)((ys, x) => ys + 1)
 
-  def length2[A](xs: List[A]): Int = List.foldLeft(xs, 0)((ys, x) => ys + 1)
+  def length2[A](xs: List[A]): Int = foldLeft(xs, 0)((ys, x) => ys + 1)
 }
