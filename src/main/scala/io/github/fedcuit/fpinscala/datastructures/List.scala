@@ -15,9 +15,21 @@ object List {
     }
   }
 
+  def foldLeft[A, B](xs: List[A], init: B)(f: (B, A) => B): B = {
+    xs match {
+      case Nil => init
+      case Cons(h, Nil) => f(init, h)
+      case Cons(h, t) => foldLeft(List.init(xs), f(init, List.last(xs)))(f)
+    }
+  }
+
   def sum(xs: List[Int]): Int = foldRight(xs, 0)(_ + _)
 
+  def sum2(xs: List[Int]): Int = foldLeft(xs, 0)(_ + _)
+
   def product(xs: List[Double]): Double = foldRight(xs, 1d)(_ * _)
+
+  def product2(xs: List[Double]): Double = foldLeft(xs, 1d)(_ * _)
 
   def apply[A](as: A*): List[A] =
     if (as.isEmpty) Nil
@@ -64,6 +76,14 @@ object List {
     }
   }
 
+  def last[A](xs: List[A]): A = {
+    xs match {
+      case Nil => throw new RuntimeException("can not call last on empty list")
+      case Cons(last, Nil) => last
+      case Cons(h, t) => last(t)
+    }
+  }
+
   def append[A](xs: List[A], ys: List[A]): List[A] = {
     xs match {
       case Nil => ys
@@ -71,11 +91,9 @@ object List {
     }
   }
 
-  def reverse[A](xs: List[A]): List[A] = {
-    foldRight(xs, List[A]())((ys: List[A], x: A) => List.append(ys, List(x)))
-  }
+  def reverse[A](xs: List[A]): List[A] = foldRight(xs, List[A]())((ys: List[A], x: A) => List.append(ys, List(x)))
 
-  def length[A](xs: List[A]): Int = {
-    List.foldRight(xs, 0)((ys, x) => ys + 1)
-  }
+  def length[A](xs: List[A]): Int = List.foldRight(xs, 0)((ys, x) => ys + 1)
+
+  def length2[A](xs: List[A]): Int = List.foldLeft(xs, 0)((ys, x) => ys + 1)
 }

@@ -82,12 +82,14 @@ class List$Test extends FunSpec with Matchers {
     describe("sum method") {
       it("should return the sum of all elements") {
         List.sum(List(1, 2, 3, 4, 5)) should be(15)
+        List.sum2(List(1, 2, 3, 4, 5)) should be(15)
       }
     }
 
     describe("product method") {
       it("should return the product of all elements") {
         List.product(List(1, 2, 3, 4, 5)) should be(120)
+        List.product2(List(1, 2, 3, 4, 5)) should be(120)
       }
     }
 
@@ -99,11 +101,24 @@ class List$Test extends FunSpec with Matchers {
 
     describe("length method") {
       it("should return the size of elements in list") {
-        List.length(List(1,2,3,4)) should be(4)
+        List.length(List(1, 2, 3, 4)) should be(4)
+        List.length2(List(1, 2, 3, 4)) should be(4)
       }
 
       it("should return 0 when call in on a empty list") {}
       List.length(List()) should be(0)
+    }
+
+    describe("last method") {
+      it("should throw exception when call on empty list") {
+        intercept[RuntimeException] {
+          List.last(Nil)
+        }
+      }
+
+      it("should return the last element") {
+        List.last(List(1, 2, 3, 4, 5)) should be(5)
+      }
     }
   }
 }
