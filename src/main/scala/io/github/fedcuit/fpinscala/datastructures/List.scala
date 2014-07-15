@@ -100,4 +100,10 @@ object List {
   def length[A](xs: List[A]): Int = foldRight(xs, 0)((ys, x) => ys + 1)
 
   def length2[A](xs: List[A]): Int = foldLeft(xs, 0)((ys, x) => ys + 1)
+
+  def concat[A](ls: List[A]*): List[A] = {
+    if (ls.isEmpty) Nil
+    else if (ls.size == 2) append(ls.head, ls.last)
+    else append(ls.head, concat(ls.tail: _*))
+  }
 }
