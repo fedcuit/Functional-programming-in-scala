@@ -140,5 +140,11 @@ class List$Test extends FunSpec with Matchers {
         List.filter(List(1, 2, 3, 4))(_ % 2 == 0) should be(List(1, 3))
       }
     }
+
+    describe("flatMap method") {
+      it("should map each element into a list and flatten the lists into a single list") {
+        List.flatMap(List(1, 2, 3, 4))(x => List(x, x)) should be(List(1, 1, 2, 2, 3, 3, 4, 4))
+      }
+    }
   }
 }
