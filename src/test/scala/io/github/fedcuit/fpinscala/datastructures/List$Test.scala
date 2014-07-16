@@ -57,6 +57,19 @@ class List$Test extends FunSpec with Matchers {
       }
     }
 
+    describe("head method") {
+      it("should throw exception when access head of a empty list") {
+        intercept[RuntimeException] {
+          List.head(Nil)
+        }
+      }
+
+      it("should return head of a list") {
+        List.head(List(1, 2, 3)) should be(1)
+        List.head(List(1)) should be(1)
+      }
+    }
+
     describe("init method") {
       it("should throw exception when operate a empty list") {
         intercept[RuntimeException] {
@@ -135,15 +148,36 @@ class List$Test extends FunSpec with Matchers {
       }
     }
 
+    describe("foldLeft method") {
+      it("should fold from left") {
+        List.foldLeft(List(1, 2, 3, 4), List[Int]())((ys, x) => Cons(x, ys)) should be(List(4, 3, 2, 1))
+      }
+    }
+
+    describe("foldRight method") {
+      it("should fold from right") {
+        List.foldRight(List(1, 2, 3, 4), List[Int]())((ys, x) => Cons(x, ys)) should be(List(1, 2, 3, 4))
+        List.foldRight2(List(1, 2, 3, 4), List[Int]())((ys, x) => Cons(x, ys)) should be(List(1, 2, 3, 4))
+      }
+    }
+
     describe("filter method") {
       it("should remove all elements which meets condition") {
-        List.filter(List(1, 2, 3, 4))(_ % 2 == 0) should be(List(1, 3))
+        List.filter(List(1, 2, 3, 4))(_ % 2 == 0) should be(List(2, 4))
+        List.filter2(List(1, 2, 3, 4))(_ % 2 == 0) should be(List(2, 4))
       }
     }
 
     describe("flatMap method") {
       it("should map each element into a list and flatten the lists into a single list") {
         List.flatMap(List(1, 2, 3, 4))(x => List(x, x)) should be(List(1, 1, 2, 2, 3, 3, 4, 4))
+      }
+    }
+
+    describe("plus method") {
+      it("should zip two lists as one in which each element is sum of elements on corresponding position") {
+        List.zipTo(List(1, 2, 3), List(4, 5, 6))(_ + _) should be(List(5, 7, 9))
+        List.zipTo(List(1, 2, 3), List("this", "is", "me"))(_ + _.length) should be(List(5, 4, 5))
       }
     }
   }

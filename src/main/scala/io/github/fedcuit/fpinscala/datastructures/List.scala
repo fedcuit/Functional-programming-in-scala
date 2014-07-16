@@ -8,28 +8,35 @@ case class Cons[+A](head: A, tail: List[A]) extends List[A]
 
 object List {
 
-  def foldRight[A, B](xs: List[A], init: B)(f: (B, A) => B): B = {
+  def foldRight[A, B](xs: List[A], acc: B)(f: (B, A) => B): B = {
     xs match {
-      case Nil => init
-      case Cons(h, t) => f(foldRight(t, init)(f), h)
+      case Nil => acc
+      case Cons(h, t) => f(foldRight(t, acc)(f), h)
+    }
+  }
+
+  def foldRight2[A, B](xs: List[A], acc: B)(f: (B, A) => B): B = {
+    xs match {
+      case Nil => acc
+      case Cons(h, Nil) => f(acc, h)
+      case Cons(h, t) => foldRight2(init(xs), f(acc, last(xs)))(f)
     }
   }
 
   def foldLeft[A, B](xs: List[A], acc: B)(f: (B, A) => B): B = {
     xs match {
-      case Nil => acc
       case Cons(h, Nil) => f(acc, h)
-      case Cons(h, t) => foldLeft(init(xs), f(acc, last(xs)))(f)
+      case Cons(h, t) => foldLeft(t, f(acc, h))(f)
     }
   }
 
   def sum(xs: List[Int]): Int = foldRight(xs, 0)(_ + _)
 
-  def sum2(xs: List[Int]): Int = foldLeft(xs, 0)(_ + _)
+  def sum2(xs: List[Int]): Int = foldRight2(xs, 0)(_ + _)
 
   def product(xs: List[Double]): Double = foldRight(xs, 1d)(_ * _)
 
-  def product2(xs: List[Double]): Double = foldLeft(xs, 1d)(_ * _)
+  def product2(xs: List[Double]): Double = foldRight2(xs, 1d)(_ * _)
 
   def apply[A](as: A*): List[A] =
     if (as.isEmpty) Nil
@@ -76,6 +83,13 @@ object List {
     }
   }
 
+  def head[A](xs: List[A]): A = {
+    xs match {
+      case Nil => throw new RuntimeException("empty list doesn't have a head")
+      case Cons(h, t) => h
+    }
+  }
+
   def last[A](xs: List[A]): A = {
     xs match {
       case Nil => throw new RuntimeException("can not call last on empty list")
@@ -99,7 +113,7 @@ object List {
 
   def length[A](xs: List[A]): Int = foldRight(xs, 0)((ys, x) => ys + 1)
 
-  def length2[A](xs: List[A]): Int = foldLeft(xs, 0)((ys, x) => ys + 1)
+  def length2[A](xs: List[A]): Int = foldRight2(xs, 0)((ys, x) => ys + 1)
 
   def concat[A](ls: List[A]*): List[A] = {
     if (ls.isEmpty) Nil
@@ -108,14 +122,23 @@ object List {
   }
 
   def map[A, B](xs: List[A])(f: A => B): List[B] = {
-   foldLeft(xs, List[B]())((ys, x) => Cons(f(x), ys))
+    foldRight2(xs, List[B]())((ys, x) => Cons(f(x), ys))
   }
 
   def filter[A](xs: List[A])(f: A => Boolean): List[A] = {
-    foldLeft(xs, List[A]())((ys, x) => if (f(x)) ys else Cons(x, ys))
+    foldRight(xs, List[A]())((ys, x) => if (f(x)) Cons(x, ys) else ys)
   }
 
-  def flatMap[A, B](xs: List[A])(f: A => List[B]): List[B] = {
-    foldLeft(xs, List[B]())((ys, x) => append(ys, f(x)))
+  def filter2[A](xs: List[A])(f: A => Boolean): List[A] = {
+    flatMap(xs)(x => if (f(x)) List(x) else Nil)
+  }
+
+  def flatMap[A, B](xs: List[A])(f: A => List[B]): List[B] = foldLeft(xs, List[B]())((ys, x) => append(ys, f(x)))
+
+  def zipTo[A, B, E](xs: List[A], ys: List[B])(f: (A, B) => E): List[E] = {
+    xs match {
+      case Nil => Nil
+      case Cons(h, t) => Cons(f(h, head(ys)), zipTo(t, tail(ys))(f))
+    }
   }
 }
