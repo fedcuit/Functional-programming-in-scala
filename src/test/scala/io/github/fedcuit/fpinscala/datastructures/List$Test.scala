@@ -180,5 +180,43 @@ class List$Test extends FunSpec with Matchers {
         List.zipTo(List(1, 2, 3), List("this", "is", "me"))(_ + _.length) should be(List(5, 4, 5))
       }
     }
+
+    describe("take method") {
+      it("should return the first n elements") {
+        List.take(List(1, 2, 3, 4, 5, 6), 3) should be(List(1, 2, 3))
+      }
+
+      it("should return whole list if n is bigger than the length of the list") {
+        List.take(List(1, 2, 3, 4, 5, 6), 8) should be(List(1, 2, 3, 4, 5, 6))
+      }
+    }
+
+    describe("takeWhile method") {
+      it("should the longest valid prefix") {
+        List.takeWhile(List(1, 2, 3, 4, 5, 6))(_ < 4) should be(List(1, 2, 3))
+      }
+    }
+
+    describe("forAll method") {
+      it("should return true only if all elements meets condition") {
+        List.forAll(List(2, 4, 6, 8, 10))(_ % 2 == 0) should be(true)
+        List.forAll(List(2, 4, 5, 6, 7))(_ % 2 == 0) should be(false)
+      }
+    }
+
+    describe("exists method") {
+      it("should return true if any element meets condition") {
+        List.exists(List(1, 3, 5, 6, 7))(_ % 2 == 0) should be(true)
+        List.exists(List(1, 3, 5, 9, 7))(_ % 2 == 0) should be(false)
+      }
+    }
+
+    describe("hasSubSequence method") {
+      it("should return true when list A contains list B") {
+        List.hasSubSequence(List(1, 2, 3, 4), List(2, 3)) should be(true)
+        List.hasSubSequence(List(1, 2, 3, 4), List(1, 2, 3)) should be(true)
+        List.hasSubSequence(List(1, 2, 3, 4), List(2, 3, 4)) should be(true)
+      }
+    }
   }
 }

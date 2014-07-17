@@ -141,4 +141,38 @@ object List {
       case Cons(h, t) => Cons(f(h, head(ys)), zipTo(t, tail(ys))(f))
     }
   }
+
+  def take[A](xs: List[A], n: Int): List[A] = {
+    def takeF(xs: List[A], temp: List[A], n: Int): List[A] =
+      if (length(xs) < n) xs
+      else if (n == 0) temp
+      else reverse(takeF(tail(xs), Cons(head(xs), temp), n - 1))
+
+    takeF(xs, List[A](), n)
+  }
+
+  def takeWhile[A](xs: List[A])(f: A => Boolean): List[A] = {
+    def takeF(xs: List[A], temp: List[A]): List[A] = {
+      if (!f(head(xs))) temp
+      else reverse(takeF(tail(xs), Cons(head(xs), temp)))
+    }
+
+
+    takeF(xs, List[A]())
+  }
+
+  def forAll[A](xs: List[A])(f: A => Boolean): Boolean = {
+    foldLeft(xs, true)((ys, x) => ys && f(x))
+  }
+
+  def exists[A](xs: List[A])(f: A => Boolean): Boolean = {
+    foldLeft(xs, false)((ys, x) => ys || f(x))
+  }
+
+  def hasSubSequence[A](xs: List[A], ys: List[A]): Boolean = {
+    val sub = dropWhile(xs)(_ == head(ys))
+    if (sub == Nil) false
+    else if (length(ys) == 1 && sub != null) true
+    else hasSubSequence(sub, tail(ys))
+  }
 }
