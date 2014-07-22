@@ -35,7 +35,7 @@ class Stream$Test extends FunSpec with Matchers {
     describe("exists") {
       it("should return true if any element match the predicate") {
         val stream = Stream(1, 2, 3, 4, 5)
-        Stream.exists(stream)(_ == 4) should be (true)
+        Stream.exists(stream)(_ == 4) should be(true)
       }
     }
 
@@ -45,14 +45,42 @@ class Stream$Test extends FunSpec with Matchers {
         // so when `true || predicate('1')`, the right side will never be executed and recursion will be ended.
         val stream = Stream(1, 2, 3, 4, 5)
         // check the output in console
-        Stream.exists2(stream)(_ == 4) should be (true)
+        Stream.exists2(stream)(_ == 4) should be(true)
       }
     }
 
     describe("exists3") {
       it("should has the same functionality with `exists2`") {
         val stream = Stream(1, 2, 3, 4, 5)
-        Stream.exists3(stream)(_ == 4) should be (true)
+        Stream.exists3(stream)(_ == 4) should be(true)
+      }
+    }
+
+    describe("forAll") {
+      it("should return true if all elements match the predicate and it should termination immediately if any element doesn't match the predicate") {
+        val stream = Stream(1, 2, 3, 4, 5)
+        Stream.forAll(stream)(_ < 4) should be(false)
+      }
+    }
+
+    describe("map") {
+      it("should return a new stream with every element transformed") {
+        val stream = Stream(1, 2, 3, 4, 5)
+        Stream.toList(Stream.map(stream)(_ + 1)) should be(List(2, 3, 4, 5, 6))
+      }
+    }
+
+    describe("filter") {
+      it("should return all elements meet the predicate") {
+        val stream = Stream(1, 2, 3, 4, 5)
+        Stream.toList(Stream.filter(stream)(_ % 2 == 0)) should be(List(2, 4))
+      }
+    }
+
+    describe("combine map and filter") {
+      it("should only loop stream once") {
+        val stream = Stream(1, 2, 3, 4, 5)
+        Stream.toList(Stream.filter(Stream.map(stream)(_ + 1))(_ % 2 == 0)) should be(List(2, 4, 6))
       }
     }
   }

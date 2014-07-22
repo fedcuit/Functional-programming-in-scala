@@ -76,4 +76,25 @@ object Stream {
       f(x) || ys
     })
   }
+
+  def forAll[A](s: Stream[A])(f: A => Boolean): Boolean = {
+    foldRight3(s, true)((x, ys) => {
+      println(s"check $x")
+      f(x) && ys
+    })
+  }
+
+  def map[A, B](s: Stream[A])(f: A => B): Stream[B] = {
+    foldRight3(s, empty[B])((x, ys) => {
+      println(s"map $x to ${f(x)}")
+      cons(f(x), ys)
+    })
+  }
+
+  def filter[A](s: Stream[A])(f: A => Boolean): Stream[A] = {
+    foldRight3(s, empty[A])((x, ys) => {
+      println(s"select $x")
+      if (f(x)) cons(x, ys) else ys
+    })
+  }
 }
