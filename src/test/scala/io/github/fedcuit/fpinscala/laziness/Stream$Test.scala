@@ -48,5 +48,12 @@ class Stream$Test extends FunSpec with Matchers {
         Stream.exists2(stream)(_ == 4) should be (true)
       }
     }
+
+    describe("exists3") {
+      it("should has the same functionality with `exists2`") {
+        val stream = Stream(1, 2, 3, 4, 5)
+        Stream.exists3(stream)(_ == 4) should be (true)
+      }
+    }
   }
 }

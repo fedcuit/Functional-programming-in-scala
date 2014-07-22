@@ -51,6 +51,11 @@ object Stream {
     else foldRight2(s.uncons.get._2, f(s.uncons.get._1, acc))(f)
   }
 
+  def foldRight3[A, B](s: Stream[A], acc: => B)(f: (A, => B) => B): B = {
+    if (s.isEmpty) acc
+    else f(s.uncons.get._1, foldRight3(s.uncons.get._2, acc)(f))
+  }
+
   def exists[A](s: Stream[A])(f: A => Boolean): Boolean = {
     foldRight(s, false)((x, ys) => {
       println(s"check $x")
@@ -60,6 +65,13 @@ object Stream {
 
   def exists2[A](s: Stream[A])(f: A => Boolean): Boolean = {
     foldRight2(s, false)((x, ys) => {
+      println(s"check $x")
+      f(x) || ys
+    })
+  }
+
+  def exists3[A](s: Stream[A])(f: A => Boolean): Boolean = {
+    foldRight3(s, false)((x, ys) => {
       println(s"check $x")
       f(x) || ys
     })
